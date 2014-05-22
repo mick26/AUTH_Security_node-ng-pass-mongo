@@ -1,7 +1,8 @@
 ## Synopsis
  
 
-Authentication with NodeJS, ExpressJS, AngularJS and MongoDB
+Authentication with NodeJS, ExpressJS, AngularJS and MongoDB.
+
 Secure Angular route URL's by the server.
 
 
@@ -9,10 +10,10 @@ Secure Angular route URL's by the server.
 
 User creation/logon and Authentication is managed using the following $http routes: 
 
-post /login		//login using username & password
-post /signup 	//signup to register a username & password
-get /users 		//returns list of all users from the MongoDB -- a secured URL
-get /loggedin 	//test if logged in or not
+* post /login		//login using username & password
+* post /signup 	//signup to register a username & password
+* get /users 		//returns list of all users from the MongoDB -- a secured URL
+* get /loggedin 	//test if logged in or not
 
 If the user selects a secured route - the route processing will stop and a 401 (unauthorised) error will be returned.
 
@@ -34,7 +35,7 @@ It is also advisable to connect from Node server to MongoDB over HTTPS connectio
 - Bcryptjs to encrypt the plain text password for storage in MongoDB
 
 
-The program is based on a number of sources but mainly [Kev's Tutorial](https://vickev.com/#!/article/authentication-in-single-page-applications-node-js-passportjs-angularjs) and [daniel stubbs tutorial](http://danielstudds.com/setting-up-passport-js-secure-spa-part-1/). 
+The program is based on a number of sources but mainly [Kev's Tutorial](https://vickev.com/#!/article/authentication-in-single-page-applications-node-js-passportjs-angularjs) and [Daniel Stubbs tutorial](http://danielstudds.com/setting-up-passport-js-secure-spa-part-1/). 
 An interesting article is given by [Alberto Pose](https://auth0.com/blog/2014/01/07/angularjs-authentication-with-cookies-vs-token/) regarding the use of Cookies or Tokens with Angular. 
 
 
