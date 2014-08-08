@@ -20,6 +20,8 @@ var mongoose = require('mongoose');     //MongoDb interaction
 var bcrypt = require('bcryptjs');       //Encryption package
 var SALT_WORK_FACTOR = 10;              //Nos computation cycles with Encryption
 
+//Mongoose version
+console.log('Running mongoose version %s', mongoose.version); 
 
 /********************************************************************
 Specify MongoDB

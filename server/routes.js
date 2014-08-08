@@ -1,94 +1,45 @@
 /*================================================================
-Server side Routing using Express / Mongoose / MongoDB
+Server side Routing
+
+ROUTE Declarations
+
+Ref.
+https://vickev.com/#!/article/authentication-in-single-page-applications-node-js-passportjs-angularjs
+http://scotch.io/quick-tips/js/node/route-middleware-to-check-if-a-user-is-authenticated-in-node-js
+http://stackoverflow.com/questions/14188834/express-passport-where-is-the-documentation-for-ensureauthentication-isaut
+https://github.com/jaredhanson/passport/blob/a892b9dc54dce34b7170ad5d73d8ccfba87f4fcf/lib/passport/http/request.js#L74
 =================================================================*/
 
+
+/* ========================================================== 
+Internal App Modules/Packages Required
+============================================================ */
+var authRoutes = require('./routes/auth-routes.js');  //route definitions
 var passport = require('passport');
 
 /* ========================================================== 
 Define a function to be used at every secured route
 Send HTTP 401 error (unauthorised) if not logged on
+NOTE!! req.isAuthenticated() and req.isUnauthenticated() are PassportJS flags
 ============================================================ */
 var auth = function(req, res, next) {
   if (!req.isAuthenticated()) 
-  	res.send(401);
+  	res.status(401).send("Unauthorised");
   else
   	next();
 };
 
 
-module.exports = function(app) 
-{
-	/*================================================================
-	$http GET /users
-	auth will return 401 and stop the route if user not logged in
-	=================================================================*/
-	app.get('/users', auth, function(req, res) {
-	  
-		// get and return all the todos after you create another
-		UserModel.find(function(err, username) 
-		{
-			if (err)
-			{
-				return res.send(err);
-			}
-			else
-			{
-				return res.json(username);
-			}
-		});
-	});
+module.exports = function(app) {
 
-	/*================================================================
-	$http get /loggedin
-	Test if user is logged in or not
-	=================================================================*/
-	app.get('/loggedin', function(req, res) {
-	  	res.send(req.isAuthenticated() ? req.user : '0');
-		console.log("get /loggedin");
-	});
+	/* ========================================================== 
+	User Routes
+	============================================================ */
+	app.post('/register', authRoutes.register);
+	app.post('/login', passport.authenticate('local'), authRoutes.login);
+	app.post('/logout', authRoutes.logout);
+	app.get('/loggedin', authRoutes.loggedin);
 
+	app.get('/users', auth, authRoutes.users);	//added auth middleware to route
 
-	/*================================================================
-	$http post /login
-	=================================================================*/
-	app.post('/login', passport.authenticate('local'), function(req, res) {
-	  res.send(req.user);
-	});
-
-
-	/*================================================================
-	$http post - Sign Up 
-	=================================================================*/
-	app.post('/signup', function(req, res) {
-
-		//	console.log("req username: " + req.body.username);	//TEST
-		//	console.log("req password: " +req.body.password);	//TEST
-		//	console.log("req email: " +req.body.email);			//TEST
-
-		var newUser = new UserModel( {
-			username: req.body.username,
-			password: req.body.password, 
-			admin: true,
-			email:req.body.email 
-		})
-
-		/*================================================================
-		save user to DB
-		=================================================================*/
-		newUser.save( function(err) {
-		    if (err) 
-		    	throw err;
-
-			  res.send(req.user);
-		});
-	});
-
-	/*================================================================
-	$HTTP post /logout
-	=================================================================*/
-	app.post('/logout', function(req, res) {
-	  req.logOut();
-	  res.send(200);
-	});
-	/*===============================================================*/
 };

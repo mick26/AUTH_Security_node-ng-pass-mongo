@@ -1,20 +1,24 @@
 {
   "name": "Angular-Node-PassportLocal-Auth-Basic",
   "version": "0.0.1",
-  "authors": [ "Michael Cullen" ],
+  "authors": [
+    "Michael Cullen"
+  ],
   "description": "Authentication with Node and Angular using Passsport",
   "ignore": [
-  "**/*.txt",
-  "node_modules",
-  "bower_components",
-  "test",
-  "tests"
+    "**/*.txt",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
   ],
   "dependencies": {
-  "bootstrap": "~3",
-  "angular": "v1.3.0-beta.7",
-  "angular-route": "v1.3.0-beta.7",
-  "angular-resource": "v1.3.0-beta.7"
+    "bootstrap": "~3.2.0",
+    "angular": "~1.2.21",
+    "angular-route": "~1.2.21",
+    "angular-resource": "~1.2.21",
+    "angular-flash": "~0.1.13",
+    "ui-bootstrap": "~0.11.0"
   },
   "license": "MIT",
   "private": true

@@ -25,6 +25,7 @@ var https = require('https');
 var path = require('path');
 var bodyParser = require('body-parser');
 var logger= require('morgan');
+var colours = require('colors');
 var methodOverride = require('method-override');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
@@ -68,7 +69,10 @@ Use Middleware
 ============================================================ */
 app.use(logger('dev'));
 app.use(cookieParser()); 
-app.use(bodyParser());
+
+// parse application/json
+app.use(bodyParser.json())
+
 app.use(methodOverride());
 
 
@@ -76,7 +80,11 @@ app.use(methodOverride());
 Use express.session before passport
 To ensure passport session will work
 ============================================================ */
-app.use(session({ secret: 'securedsession' }));
+app.use(session({ 
+	secret: 'securedsession', 
+  	saveUninitialized: true,
+    resave: true
+}));
 
 /* ========================================================== 
 Use Passport
@@ -94,7 +102,8 @@ app.use(passport.session());    // Add passport initialization
 Set the path to static files. 
 Where index.html shall be found.
 ============================================================ */
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname + "/public"));
+//app.use(express.static(path.join(__dirname, 'public')));
 
 
 /* ========================================================== 
@@ -109,14 +118,13 @@ Secure HTTPS Server
 
 var secureServer = https.createServer( credentials, app);
 secureServer.listen(app.get('port'), function() {
-    console.log('Secure Express server listening on port %d ', secureServer.address().port);
-	console.log("========LISTENING=========")
+    console.log('Secure Express server listening on port %d ' .red, secureServer.address().port);
 });
 
 
 /* Unsecure http server
 http.createServer(app).listen(app.get('port'), function() {
-  console.log('Express server listening on port ' + app.get('port'));
+  console.log('Express server listening on port ' .green + app.get('port'));
 });
 */
 

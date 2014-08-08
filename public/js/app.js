@@ -2,11 +2,16 @@
 
 /**********************************************************************
  * Module - Main module dependancies include the controllers module
+
+ flash service is a publisher of flash messages and the flash directive is a subscriber to flash messages. 
+ The flash directive leverages the Twitter Bootstrap Alert component.
  **********************************************************************/
-angular.module('authApp', ['ngResource', 'ngRoute', 'authApp.controllers'] )
+angular.module('authApp', ['ngResource', 'ngRoute', 'angular-flash.flash-alert-directive', 'angular-flash.service', 
+      'authApp.controllers'] )
 
 
   .config(function($routeProvider, $locationProvider, $httpProvider) {
+
 
     //==========================================================
     // Check if the user is logged in by answering to a promise
@@ -15,21 +20,35 @@ angular.module('authApp', ['ngResource', 'ngRoute', 'authApp.controllers'] )
     // otherwise redirect to login form
     //==========================================================
     var checkLoggedin = function($q, $timeout, $http, $location, $rootScope) {
+      
       // Initialize a new promise
-      var deferred = $q.defer();
+      var deferred = $q.defer();  //returns a deferred object - either be resolved or rejected
 
-      // Make an AJAX call to check if the user is logged in
+      //Make an AJAX call to check if the user is logged in
+      //$http returns a promise with 2 methods success and error
+      //since returned value is a promise you can use then method to register callbacks
       $http.get('/loggedin')
 
-      .success(function(user) {
-        // Authenticated
-        if (user !== '0')
+      //.success(function(user) {
+      .success(function(data, status, headers, config) {
+      
+        //Authenticated - 
+        if (data !== '0') {
           $timeout(deferred.resolve, 0);
+          $rootScope.isLogged = 1;
+          $rootScope.username = data.username;
+        }
 
-        // Not Authenticated
+        //Got 0 as $http response i.e. Not Authenticated
         else {
           $rootScope.message = 'You need to log in.';
-          $timeout(function(){deferred.reject();}, 0);
+          $rootScope.isLogged = 0;          
+          $rootScope.username = "";
+          $timeout(function(){ 
+            deferred.reject(); 
+          }, 0);
+          
+      //    $rootScope.username = "";
           $location.url('/login');
         }
       });
@@ -69,25 +88,36 @@ angular.module('authApp', ['ngResource', 'ngRoute', 'authApp.controllers'] )
     $routeProvider
 
       .when('/', {
-        templateUrl: '/views/main.html'
+        templateUrl: '/views/home.tpl.html',
+        controller: 'HomeCtrl'
+      })
+	  
+	   .when('/register', {
+        templateUrl: 'views/register.tpl.html',
+        controller: 'RegisterCtrl'
+      })
+
+      .when('/login', {
+        templateUrl: 'views/login.tpl.html',
+        controller: 'LoginCtrl'
+      })
+
+     .when('/logout', {
+        templateUrl: 'views/home.tpl.html',
+        controller: 'LogoutCtrl'
+      })
+
+     .when('/about', {
+        templateUrl: 'views/about.tpl.html',
+        controller: 'AboutCtrl'
       })
 
       .when('/admin', {
-        templateUrl: 'views/admin.html',
+        templateUrl: 'views/admin.tpl.html',
         controller: 'AdminCtrl',
         resolve: {                  
           loggedin: checkLoggedin     //secure url
         }
-      })
-
-      .when('/login', {
-        templateUrl: 'views/login.html',
-        controller: 'LoginCtrl'
-      })
-	  
-	   .when('/signup', {
-        templateUrl: 'views/signup.html',
-        controller: 'SignUpCtrl'
       })
       
       .otherwise({
@@ -97,13 +127,21 @@ angular.module('authApp', ['ngResource', 'ngRoute', 'authApp.controllers'] )
 
   }) // end of config()
 
-  .run(function($rootScope, $http) {
-    $rootScope.message = '';
 
-    // Logout function is available in any pages
-    $rootScope.logout = function() {
-      $rootScope.message = 'Logged out.';
-      $http.post('/logout');
-    };
+  .config(function (flashProvider) {
+      // Support bootstrap 3.0 "alert-danger" class with error flash types
+      flashProvider.errorClassnames.push('alert-danger');
+
+      /**
+       * Also have...
+       *
+       * flashProvider.warnClassnames
+       * flashProvider.infoClassnames
+       * flashProvider.successClassnames
+       */
+  })
+
+  .run(function($rootScope, $http) {
+    $rootScope.message = 'This is Root Message';
   });
 

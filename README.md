@@ -11,7 +11,7 @@ Secure Angular route URL's by the server.
 User creation/logon and Authentication is managed using the following $http routes: 
 
 * post /login		//login using username & password
-* post /signup 	//signup to register a username & password
+* post /signup 		//signup to register a username & password
 * get /users 		//returns list of all users from the MongoDB -- a secured URL
 * get /loggedin 	//test if logged in or not
 
@@ -33,7 +33,7 @@ It is also advisable to connect from Node server to MongoDB over HTTPS connectio
 - Passport Local Strategy, simple username and password logon. Other strategies include using Facebook, Twitter, Google accounts to log on
 - Mongoose to connect with the MongoDB
 - Bcryptjs to encrypt the plain text password for storage in MongoDB
-
+- Angular-flash to show messages
 
 The program is based on a number of sources but mainly [Kev's Tutorial](https://vickev.com/#!/article/authentication-in-single-page-applications-node-js-passportjs-angularjs) and [Daniel Stubbs tutorial](http://danielstudds.com/setting-up-passport-js-secure-spa-part-1/). 
 An interesting article is given by [Alberto Pose](https://auth0.com/blog/2014/01/07/angularjs-authentication-with-cookies-vs-token/) regarding the use of Cookies or Tokens with Angular. 
@@ -64,7 +64,7 @@ Note: you can disable the HTTPS server in the server.js file and uncomment the H
 
 ## Technologies Used
  
-Node, Express 4.2, Angular, Mongoose, MongoDB, OpenSSL, Robomongo MongoDB client, REST API, Bower, Passport, Bcryptjs,
+Node, Express 4.x, Angular, Mongoose, MongoDB, OpenSSL, Robomongo MongoDB client, REST API, Bower, Passport, Bcryptjs, Angular-flash
 $http service to make AJAX (Asynchronous JavaScript and XML) requests in AngularJS.
 
 
