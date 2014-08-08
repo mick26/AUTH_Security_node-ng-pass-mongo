@@ -34,3 +34,12 @@
 .alert-warn h4 {
     color: #c09853;
 }
+
+/* add colors to error class */
+.alert-error {
+    background-color: #e83425;  /* orange */
+    border: 1px solid #fbeed5;
+}
+
+
+

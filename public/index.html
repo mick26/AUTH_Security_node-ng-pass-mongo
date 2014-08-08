@@ -45,9 +45,12 @@
     </div> <!-- @END/ navbar -->
 
 
+    <!-- The Views will be injected here -->
+    <ng-view></ng-view>
+
+
     <!-- Flash Messages -->
     <div class=row>
-
         <div class="col-md-offset-3 col-md-6 col-sm-12">
 
             <!-- Subscribe to success flash messages. -->
@@ -79,13 +82,9 @@
               <span class="alert-message">{{flash.message}}</span>
             </div> 
             -->
-
         </div>
-
     </div>
-    <!-- -->
-    <!-- The Views will be injected here -->
-    <ng-view></ng-view>
+
 
     <!-- JS -->
     <script type="text/javascript" src="bower_components/angular/angular.js"></script>

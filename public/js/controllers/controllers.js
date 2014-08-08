@@ -153,7 +153,8 @@ angular.module('authApp.controllers', [])
   //This object will be filled by the form
   $scope.user = {};
   //$rootScope.isLogged = 0;
-
+  
+  //for Flash messages
   $scope.all = function () {
       $scope.info();
       $scope.warn();
